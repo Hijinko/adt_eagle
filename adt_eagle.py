@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from "./doc/credentials" import credentials
+from doc.credentials import credentials
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
