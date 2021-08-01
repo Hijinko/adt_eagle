@@ -54,9 +54,11 @@ driver.fullscreen_window()
 # continue to refresh the screen every 15 seconds
 # this is required because ADT control wil time out very often
 while True:
-    time.sleep(15)
-    # refresh the screen
-    driver.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 'r')
+    # continue to press the play buttons if they time out
+    driver.implicitly_wait(240)
+    plays = driver.find_elements_by_xpath("//span[text()='Play']")
+    for play in plays:
+        play.click()
 
 # close the browser
 # this may not run as infinite loop is set above
