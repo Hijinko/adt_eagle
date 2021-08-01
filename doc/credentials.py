@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-credentials {
+credentials = {
     'username': '' #enter username between the two double quotes
     'password': '' #enter password between the two single quotes
 }
