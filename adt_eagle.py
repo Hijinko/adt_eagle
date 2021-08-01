@@ -10,7 +10,7 @@ url = "https://www.adt.com/control-login"
 driver.get(url)
 
 # wait for and load all the login feilds
-driver.implicitly_wait(10)
+driver.implicitly_wait(30)
 user_field = driver.find_element_by_xpath('//*[@id="username"]')
 password_field = driver.find_element_by_xpath('//*[@id="password"]')
 # button to remember the logging in computer
@@ -29,7 +29,7 @@ check_box.click()
 login_button.click()
 
 # now we must wait for the verification to kick in
-driver.implicitly_wait(10)
+driver.implicitly_wait(30)
 continue_button = driver.find_element_by_xpath('//*[@id="ember465"]/div[1]/span')
 continue_button.click()
 # user gets 60 seconds to type in the code that was sent to their phone
@@ -39,12 +39,12 @@ device_button = driver.find_element_by_xpath('//*[@id="ember478"]/div[1]/span');
 device_button.click()
 
 # now go to the video stream
-driver.implicitly_wait(10)
+driver.implicitly_wait(30)
 video_link = driver.find_element_by_xpath("//*[contains(text(), 'Live Video')]")
 video_link.click()
 
 # display all videos on the screen
-driver.implicitly_wait(10)
+driver.implicitly_wait(30)
 # make the videos full screen
 full_screen = driver.find_element_by_css_selector('[aria-label="Full Screen"]')
 full_screen.click()
@@ -54,9 +54,11 @@ driver.fullscreen_window()
 # continue to refresh the screen every 15 seconds
 # this is required because ADT control wil time out very often
 while True:
-    time.sleep(15)
-    # refresh the screen
-    driver.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 'r')
+    # continue to press the play buttons if they time out
+    driver.implicitly_wait(240)
+    plays = driver.find_elements_by_xpath("//span[text()='Play']")
+    for play in plays:
+        play.click()
 
 # close the browser
 # this may not run as infinite loop is set above
