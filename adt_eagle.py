@@ -3,9 +3,15 @@ from doc.credentials import credentials
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+import os
 
 # setup the driver
-driver = webdriver.Chrome("./bin/chromedriver.exe")
+# if the users has a windows device than set drive to the exe under bin
+# else the driver should be the default path
+if ('nt' == os.name):
+    driver = webdriver.Chrome("./bin/chromedriver.exe")
+else:
+    driver = webdriver.Chrome()
 url = "https://www.adt.com/control-login"
 driver.get(url)
 
@@ -16,8 +22,7 @@ password_field = driver.find_element_by_xpath('//*[@id="password"]')
 # button to remember the logging in computer
 check_box = driver.find_element_by_xpath('//*[@id="loginForm"]/div/div[4]/div[1]/div/div/div/div[1]/label')
 login_button = driver.find_element_by_xpath('//*[@id="loginForm"]/div/button')
-cookie_button = driver.find_element_by_xpath('//*[@id="cookie-banner-5553"]/a')
-
+cookie_button = driver.find_element_by_link_text("DISMISS")
 # click the accept cookies button to allow filling in useranme and password feilds
 cookie_button.click()
 # load the username and password from the credentials file
@@ -55,10 +60,18 @@ driver.fullscreen_window()
 # this is required because ADT control wil time out very often
 while True:
     # continue to press the play buttons if they time out
-    driver.implicitly_wait(240)
     plays = driver.find_elements_by_xpath("//span[text()='Play']")
-    for play in plays:
-        play.click()
+    if (0 != len(plays)):
+        for play in plays:
+            play.click()
+    # sometime the streams time out and need to be restarted
+    reconnects = driver.find_elements_by_xpath("//span[text()='Reconnect']")
+    if (0 != len(reconnects)):
+        for reconnect in reconnects:
+            reconnect.click()
+        # refresh the page to prevent timeouts
+        body = driver.find_element_by_tag_name("body")
+        body.send_keys(Keys.COMMAND + 'r')
 
 # close the browser
 # this may not run as infinite loop is set above
