@@ -49,18 +49,16 @@ video_link = driver.find_element_by_xpath("//*[contains(text(), 'Live Video')]")
 video_link.click()
 
 # display all videos on the screen
-driver.implicitly_wait(30)
 # make the videos full screen
 full_screen = driver.find_element_by_css_selector('[aria-label="Full Screen"]')
 full_screen.click()
 
 # make the browser full screen
 driver.fullscreen_window()
-# continue to refresh the screen every 15 seconds
-# this is required because ADT control wil time out very often
+#only wait 2 seconds for each play or reconnect element to appear
+driver.implicitly_wait(2)
 while True:
     # continue to press the play buttons if they time out
-    driver.implicitly_wait(60)
     plays = driver.find_elements_by_xpath("//span[text()='Play']")
     if (0 != len(plays)):
         for play in plays:
