@@ -60,12 +60,13 @@ driver.fullscreen_window()
 # this is required because ADT control wil time out very often
 while True:
     # continue to press the play buttons if they time out
+    driver.implicitly_wait(60)
     plays = driver.find_elements_by_xpath("//span[text()='Play']")
     if (0 != len(plays)):
         for play in plays:
             play.click()
     # sometime the streams time out and need to be restarted
-    reconnects = driver.find_elements_by_xpath("//span[text()='Reconnect']")
+    reconnects = driver.find_elements_by_xpath("//span[text()='Retry']")
     if (0 != len(reconnects)):
         for reconnect in reconnects:
             reconnect.click()
