@@ -55,8 +55,8 @@ full_screen.click()
 
 # make the browser full screen
 driver.fullscreen_window()
-#only wait 2 seconds for each play or reconnect element to appear
-driver.implicitly_wait(2)
+#reset driver to default wait
+driver.implicitly_wait(0)
 while True:
     # continue to press the play buttons if they time out
     plays = driver.find_elements_by_xpath("//span[text()='Play']")
@@ -69,8 +69,7 @@ while True:
         for reconnect in reconnects:
             reconnect.click()
         # refresh the page to prevent timeouts
-        body = driver.find_element_by_tag_name("body")
-        body.send_keys(Keys.COMMAND + 'r')
+        body.refresh()
 
 # close the browser
 # this may not run as infinite loop is set above
