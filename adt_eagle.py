@@ -51,15 +51,9 @@ driver.implicitly_wait(30)
 video_link = driver.find_element_by_xpath("//*[contains(text(), 'Live Video')]")
 video_link.click()
 
-driver.fullscreen_window()
-# display all videos on the screen
-# make the videos full screen
-full_screen = driver.find_element_by_xpath("//title[text()='Full Screen']")
-
-full_screen.click()
-
 # make the browser full screen
-#driver.fullscreen_window()
+driver.fullscreen_window()
+
 #reset driver to default wait
 driver.implicitly_wait(0)
 while True:
