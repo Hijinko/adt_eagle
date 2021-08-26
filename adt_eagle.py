@@ -5,13 +5,16 @@ from selenium.webdriver.common.keys import Keys
 import time
 import os
 
+options = webdriver.ChromeOptions()
+options.add_argument('--ignore-certificate-errors')
+options.add_argument('--ignore-ssl-errors')
 # setup the driver
 # if the users has a windows device than set drive to the exe under bin
 # else the driver should be the default path
 if ('nt' == os.name):
-    driver = webdriver.Chrome("./bin/chromedriver.exe")
+    driver = webdriver.Chrome("./bin/chromedriver.exe", chrome_options=options)
 else:
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(chrome_options=options)
 url = "https://www.adt.com/control-login"
 driver.get(url)
 
@@ -35,12 +38,12 @@ login_button.click()
 
 # now we must wait for the verification to kick in
 driver.implicitly_wait(30)
-continue_button = driver.find_element_by_xpath('//*[@id="ember465"]/div[1]/span')
+continue_button = driver.find_element_by_xpath("//span[text()='Continue']")
 continue_button.click()
 # user gets 60 seconds to type in the code that was sent to their phone
 # this is for 2FA
 driver.implicitly_wait(60)
-device_button = driver.find_element_by_xpath('//*[@id="ember478"]/div[1]/span');
+device_button = driver.find_element_by_xpath("//span[text()='Trust Device']");
 device_button.click()
 
 # now go to the video stream
@@ -48,13 +51,9 @@ driver.implicitly_wait(30)
 video_link = driver.find_element_by_xpath("//*[contains(text(), 'Live Video')]")
 video_link.click()
 
-# display all videos on the screen
-# make the videos full screen
-full_screen = driver.find_element_by_css_selector('[aria-label="Full Screen"]')
-full_screen.click()
-
 # make the browser full screen
 driver.fullscreen_window()
+
 #reset driver to default wait
 driver.implicitly_wait(0)
 while True:
