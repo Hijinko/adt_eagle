@@ -50,9 +50,10 @@ device_button.click()
 driver.implicitly_wait(30)
 video_link = driver.find_element_by_xpath("//*[contains(text(), 'Live Video')]")
 video_link.click()
-
+full_screen = driver.find_element_by_xpath("//*[@aria-label='Full Screen']")
+full_screen.click()
 # make the browser full screen
-driver.fullscreen_window()
+# driver.fullscreen_window()
 
 #reset driver to default wait
 driver.implicitly_wait(0)
@@ -65,10 +66,18 @@ while True:
     # sometime the streams time out and need to be restarted
     reconnects = driver.find_elements_by_xpath("//span[text()='Retry']")
     if (0 != len(reconnects)):
-        for reconnect in reconnects:
-            reconnect.click()
+        # for reconnect in reconnects:
+        #    reconnect.click()
         # refresh the page to prevent timeouts
-        body.refresh()
+        driver.refresh()
+        driver.implicitly_wait(40)
+        refresh_button = driver.find_elements_by_xpath("//span[text()='Refresh']")
+        if 0 != len(refresh_button):
+            for button in refresh_button:
+                button.click()
+        full_screen = driver.find_element_by_xpath("//*[@aria-label='Full Screen']")
+        full_screen.click()
+        driver.implicitly_wait(0)
 
 # close the browser
 # this may not run as infinite loop is set above
